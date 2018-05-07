@@ -1,4 +1,4 @@
-package com.example.xyzreader.ui;
+package com.example.xyzreader.not_used;
 
 import android.content.Context;
 import android.util.AttributeSet;

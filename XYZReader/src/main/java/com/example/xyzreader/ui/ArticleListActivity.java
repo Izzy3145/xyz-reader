@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.support.v7.app.ActionBar;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -17,7 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,9 @@ import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
+import com.example.xyzreader.not_used.DynamicHeightNetworkImageView;
+import com.example.xyzreader.not_used.ImageLoaderHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +50,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private final String INTENT_ADAPTER_POSITION = "adapter_position";
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -62,6 +65,9 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        ActionBar ab = getSupportActionBar();
+        if(ab != null){
+        ab.setDisplayShowTitleEnabled(false);}
 
         final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
@@ -84,6 +90,13 @@ public class ArticleListActivity extends AppCompatActivity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
     }
 
     //start Intent Service called UpdaterService to load cursor
@@ -167,10 +180,10 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
-                }
-            });
+                    Intent intent = new Intent(ArticleListActivity.this, ArticleDetailActivity.class);
+                    intent.putExtra(INTENT_ADAPTER_POSITION, vh.getAdapterPosition());
+                    startActivity(intent);
+            }});
             return vh;
         }
 

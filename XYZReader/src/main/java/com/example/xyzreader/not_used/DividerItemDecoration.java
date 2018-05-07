@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.xyzreader.ui;
+package com.example.xyzreader.not_used;
 
 import android.content.Context;
 import android.graphics.Canvas;

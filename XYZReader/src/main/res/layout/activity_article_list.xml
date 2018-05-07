@@ -9,7 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="168dp"
-        android:background="@color/primary_light"
+        android:background="@color/primary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
         
         <android.support.design.widget.CollapsingToolbarLayout
@@ -19,24 +19,26 @@
             app:expandedTitleMarginStart="72dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"/>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_marginLeft="@dimen/list_toolbar_side_margin"
-                android:layout_marginRight="@dimen/list_toolbar_side_margin"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:layout_marginLeft="@dimen/list_toolbar_side_margin"
+                android:layout_marginRight="@dimen/list_toolbar_side_margin"
                 app:contentInsetStart="72dp"
-                app:layout_collapseMode="pin">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/logo"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/app_name" />
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             </android.support.v7.widget.Toolbar>
 
@@ -47,7 +49,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/icons"
+        android:background="@color/primary_light_transparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <android.support.v4.widget.SwipeRefreshLayout
