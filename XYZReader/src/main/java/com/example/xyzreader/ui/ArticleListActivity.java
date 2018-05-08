@@ -13,12 +13,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,14 +29,8 @@ import android.widget.TextView;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.UpdaterService;
-import com.example.xyzreader.not_used.DynamicHeightNetworkImageView;
-import com.example.xyzreader.not_used.ImageLoaderHelper;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -46,14 +39,13 @@ import java.util.GregorianCalendar;
  * activity presents a grid of items as cards.
  */
 
-    //TODO: set up breakpoint so that handsets show a list
 public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = ArticleListActivity.class.toString();
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private TextView mNoInternetTv;
     private final String INTENT_ADAPTER_POSITION = "adapter_position";
 
     @Override
@@ -67,9 +59,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         if(ab != null){
         ab.setDisplayShowTitleEnabled(false);}
 
-        final View toolbarContainerView = findViewById(R.id.toolbar_container);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        mNoInternetTv = (TextView) findViewById(R.id.no_internet_connection);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
@@ -118,16 +109,22 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private boolean mIsRefreshing = false;
 
-    //receiver to get mIsRefereshing true or false from UpdaterService
+    //receiver to get actions from UpdaterService
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 updateRefreshingUI();
+            } else if (UpdaterService.BROADCAST_ACTION_NO_CONNECTION.equals(intent.getAction())){
+                mRecyclerView.setVisibility(View.GONE);
+                mNoInternetTv.setVisibility(View.VISIBLE);
+                mNoInternetTv.setText(getResources().getString(R.string.no_internet_connection));
             }
         }
     };
+
+    //TODO: set a No internet Connection text view
 
     //this method tells the SwipeRefreshLayout whether to refresh or not
     private void updateRefreshingUI() {
@@ -146,9 +143,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
         int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm =
-                new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(sglm);
+        GridLayoutManager glm =
+                new GridLayoutManager(this, columnCount);
+        mRecyclerView.setLayoutManager(glm);
     }
 
     @Override
@@ -173,7 +170,13 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
+            View view;
+            int columnNumber = getResources().getInteger(R.integer.list_column_count);
+            if (columnNumber == 2) {
+                view = getLayoutInflater().inflate(R.layout.list_item_article_small, parent, false);
+            } else {
+                view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
+            }
             final ViewHolder vh = new ViewHolder(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

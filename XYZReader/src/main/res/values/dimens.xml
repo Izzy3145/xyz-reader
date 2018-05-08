@@ -3,6 +3,7 @@
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">12dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
+    <integer name="list_column_count">1</integer>
 
     <!-- text sizes -->
     <dimen name="detail_title_text_size">32sp</dimen>
@@ -15,6 +16,7 @@
     <dimen name="eight_dp">8dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
     <dimen name="twentyfour_dp">24dp</dimen>
+    <dimen name="fiftysix_dp">56dp</dimen>
     <dimen name="seventytwo_dp">72dp</dimen>
 
     <dimen name="article_list_app_bar">168dp</dimen>
