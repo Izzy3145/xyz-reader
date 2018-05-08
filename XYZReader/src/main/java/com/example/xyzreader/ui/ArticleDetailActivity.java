@@ -1,30 +1,20 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,8 +35,6 @@ public class ArticleDetailActivity extends ActionBarActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Cursor mCursor;
-    private long mStartId;
-
     private int mSelectedItemId;
 
     private FloatingActionButton mFab;
@@ -57,6 +45,8 @@ public class ArticleDetailActivity extends ActionBarActivity
     private TextView mArticleBody;
 
     private final String INTENT_ADAPTER_POSITION = "adapter_position";
+    private final String SAVED_POSITION = "adapter_position";
+
     private final String TAG = ArticleDetailActivity.class.getSimpleName();
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
@@ -70,11 +60,12 @@ public class ArticleDetailActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO: what does this do?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+        */
         setContentView(R.layout.activity_article_detail);
 
         mPhotoView = (ImageView) findViewById(R.id.photo);
@@ -97,7 +88,9 @@ public class ArticleDetailActivity extends ActionBarActivity
         mFab = (FloatingActionButton) findViewById(R.id.share_fab);
         setUpFabButton();
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null) {
+            mSelectedItemId = savedInstanceState.getInt(SAVED_POSITION);
+        } else {
             //get id of item passed from ArticleListActivity
             if (getIntent() != null && getIntent().getExtras() != null) {
                 //mStartId = ItemsContract.Items.getItemId(getIntent().getData());
@@ -178,5 +171,11 @@ public class ArticleDetailActivity extends ActionBarActivity
             Log.i(TAG, "passing today's date");
             return new Date();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVED_POSITION, mSelectedItemId);
+        super.onSaveInstanceState(outState);
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--TODO: this currently gets coloured by java, change to xml -->
+    <!-- REDUNDANT -->
 
     <com.example.xyzreader.not_used.ObservableScrollView
         android:id="@+id/scrollview"
