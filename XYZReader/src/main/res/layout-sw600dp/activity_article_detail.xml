@@ -1,3 +1,5 @@
+
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -97,16 +99,21 @@
 
         <TextView
             android:id="@+id/article_body"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/article_body_width"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/twentyfour_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/sixteen_dp"
             android:paddingBottom="@dimen/detail_body_bottom_margin"
             android:textColor="@color/primary_text"
             android:textColorLink="@color/theme_accent"
             android:textSize="@dimen/body_text_size"
             android:fontFamily="serif"
+            android:background="@color/icons"
             android:lineSpacingMultiplier="0.9" />
 
     </android.support.v4.widget.NestedScrollView>

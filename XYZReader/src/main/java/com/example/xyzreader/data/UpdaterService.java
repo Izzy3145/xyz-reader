@@ -29,9 +29,6 @@ public class UpdaterService extends IntentService {
             = "com.example.xyzreader.intent.action.STATE_CHANGE";
     public static final String EXTRA_REFRESHING
             = "com.example.xyzreader.intent.extra.REFRESHING";
-    public static final String BROADCAST_ACTION_NO_CONNECTION
-            = "com.example.xyzreader.intent.action.NO_CONNECTION";
-
 
     public UpdaterService() {
         super(TAG);
@@ -44,8 +41,6 @@ public class UpdaterService extends IntentService {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
-            sendBroadcast(
-                    new Intent(BROADCAST_ACTION_NO_CONNECTION));
             Log.w(TAG, "Not online, not refreshing.");
             return;
         }

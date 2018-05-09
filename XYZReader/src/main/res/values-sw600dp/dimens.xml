@@ -6,4 +6,12 @@
     <dimen name="fab_margin">24dp</dimen>
     <integer name="list_column_count">3</integer>
 
+    <dimen name="article_list_app_bar">168dp</dimen>
+    <dimen name="article_detail_app_bar">280dp</dimen>
+    <dimen name="card_view_height">260dp</dimen>
+    <dimen name="app_bar_start_margin">36dp</dimen>
+    <dimen name="list_view_margin_vertical">72dp</dimen>
+    <dimen name="list_view_margin_horizontal">8dp</dimen>
+    <dimen name="article_body_width">500dp</dimen>
+
 </resources>

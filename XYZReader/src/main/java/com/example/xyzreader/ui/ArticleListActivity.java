@@ -1,6 +1,8 @@
 package com.example.xyzreader.ui;
 
 import android.app.ActivityOptions;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.app.LoaderManager;
@@ -18,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,7 +48,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private TextView mNoInternetTv;
     private final String INTENT_ADAPTER_POSITION = "adapter_position";
 
     @Override
@@ -60,9 +62,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         ab.setDisplayShowTitleEnabled(false);}
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mNoInternetTv = (TextView) findViewById(R.id.no_internet_connection);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         getLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
@@ -116,15 +117,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 updateRefreshingUI();
-            } else if (UpdaterService.BROADCAST_ACTION_NO_CONNECTION.equals(intent.getAction())){
-                mRecyclerView.setVisibility(View.GONE);
-                mNoInternetTv.setVisibility(View.VISIBLE);
-                mNoInternetTv.setText(getResources().getString(R.string.no_internet_connection));
-            }
-        }
+        }}
     };
-
-    //TODO: set a No internet Connection text view
 
     //this method tells the SwipeRefreshLayout whether to refresh or not
     private void updateRefreshingUI() {
@@ -172,7 +166,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
             int columnNumber = getResources().getInteger(R.integer.list_column_count);
-            if (columnNumber == 2) {
+            if (columnNumber == 1 || columnNumber == 2) {
                 view = getLayoutInflater().inflate(R.layout.list_item_article_small, parent, false);
             } else {
                 view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);

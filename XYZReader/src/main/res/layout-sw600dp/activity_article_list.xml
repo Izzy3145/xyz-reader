@@ -67,13 +67,6 @@
             android:paddingRight="@dimen/eight_dp"
             android:paddingBottom="@dimen/twentyfour_dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/no_internet_connection"
-            android:textSize="@dimen/subheading_text_size"
-            android:visibility="gone"/>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
     </FrameLayout>
