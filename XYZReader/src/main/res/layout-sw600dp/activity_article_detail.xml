@@ -99,7 +99,8 @@
 
         <TextView
             android:id="@+id/article_body"
-            android:layout_width="@dimen/article_body_width"
+            android:layout_width="match_parent"
+            android:maxWidth="@dimen/article_body_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/sixteen_dp"
